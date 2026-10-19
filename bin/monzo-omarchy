@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Runs the TypeScript CLI directly with Node's built-in type stripping.
+set -euo pipefail
+here="$(dirname "$(readlink -f "$0")")"
+node_bin=/usr/bin/node
+[[ -x $node_bin ]] || node_bin="$(command -v node)"
+exec "$node_bin" --disable-warning=ExperimentalWarning "$here/../cli/monzo-omarchy.ts" "$@"
