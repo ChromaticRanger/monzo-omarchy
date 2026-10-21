@@ -80,7 +80,7 @@ This:
 - symlinks the CLI to `~/.local/bin/monzo-omarchy`
 - asks the Omarchy shell to rescan its plugins and enables the widget
 
-A bank icon (󰁰) should appear on the right of the bar. If it doesn't, see
+A bank icon (<img src="docs/bar-icon.png" alt="bank icon" height="16">) should appear on the right of the bar. If it doesn't, see
 [Troubleshooting](#troubleshooting).
 
 ### 4. Log in to Monzo

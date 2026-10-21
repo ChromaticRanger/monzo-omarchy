@@ -2,3 +2,4 @@ node_modules/
 *.log
 docs/screenshot-full.png
 docs/_preview-tmp.png
+docs/_icon-zoom.png
