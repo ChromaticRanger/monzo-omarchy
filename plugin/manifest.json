@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "martin.monzo",
+  "id": "chromaticranger.monzo",
   "name": "Monzo",
   "version": "0.1.0",
-  "author": "Martin Tickley",
+  "author": "ChromaticRanger",
   "description": "Monzo balances, pots and the last 7 days of transactions.",
   "kinds": ["bar-widget"],
   "entryPoints": { "barWidget": "Panel.qml" },

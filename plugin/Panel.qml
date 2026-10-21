@@ -12,8 +12,8 @@ import "Model.js" as Model
 // refresh when the panel opens. No credentials ever pass through QML.
 Panel {
   id: root
-  moduleName: "martin.monzo"
-  ipcTarget: "martin.monzo"
+  moduleName: "chromaticranger.monzo"
+  ipcTarget: "chromaticranger.monzo"
   manageIpc: false
 
   readonly property string home: Quickshell.env("HOME")

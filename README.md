@@ -76,7 +76,7 @@ Any location works; `install.sh` finds the repo wherever it is.
 
 This:
 
-- copies `plugin/` to `~/.config/omarchy/plugins/martin.monzo/`
+- copies `plugin/` to `~/.config/omarchy/plugins/chromaticranger.monzo/`
 - symlinks the CLI to `~/.local/bin/monzo-omarchy`
 - asks the Omarchy shell to rescan its plugins and enables the widget
 
@@ -187,7 +187,7 @@ CLI changes take effect immediately.
 **`omarchy plugin enable` says the plugin is not known.**
 The shell hadn't scanned the new folder yet. Run:
 ```bash
-omarchy-shell shell rescanPlugins && sleep 1 && omarchy plugin enable martin.monzo
+omarchy-shell shell rescanPlugins && sleep 1 && omarchy plugin enable chromaticranger.monzo
 ```
 
 **The panel still shows an old version after an update.**
@@ -224,8 +224,8 @@ outside of the config folder".
 
 ```bash
 monzo-omarchy logout                      # revokes the token with Monzo
-omarchy plugin disable martin.monzo
-rm -rf ~/.config/omarchy/plugins/martin.monzo
+omarchy plugin disable chromaticranger.monzo
+rm -rf ~/.config/omarchy/plugins/chromaticranger.monzo
 rm -f  ~/.local/bin/monzo-omarchy
 rm -rf ~/.config/monzo-omarchy ~/.local/state/monzo-omarchy
 ```

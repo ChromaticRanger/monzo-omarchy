@@ -3,7 +3,8 @@
 # shell's inotify hot-reload does not follow symlinks) and links the CLI.
 set -euo pipefail
 repo="$(dirname "$(readlink -f "$0")")"
-dest="$HOME/.config/omarchy/plugins/martin.monzo"
+id="chromaticranger.monzo"
+dest="$HOME/.config/omarchy/plugins/$id"
 mkdir -p "$dest" "$HOME/.local/bin"
 cp -f "$repo"/plugin/* "$dest/"
 ln -sfn "$repo/bin/monzo-omarchy" "$HOME/.local/bin/monzo-omarchy"
@@ -14,10 +15,10 @@ echo "CLI linked at ~/.local/bin/monzo-omarchy"
 if command -v omarchy-shell >/dev/null; then
   omarchy-shell shell rescanPlugins >/dev/null
   for _ in $(seq 20); do
-    omarchy-shell shell listPlugins 2>/dev/null | grep -q '"martin.monzo"' && break
+    omarchy-shell shell listPlugins 2>/dev/null | grep -q "\"$id\"" && break
     sleep 0.25
   done
-  if [[ ${1:-} != --no-enable ]] && ! grep -q '"martin.monzo"' "$HOME/.config/omarchy/shell.json" 2>/dev/null; then
-    omarchy plugin enable martin.monzo
+  if [[ ${1:-} != --no-enable ]] && ! grep -q "\"$id\"" "$HOME/.config/omarchy/shell.json" 2>/dev/null; then
+    omarchy plugin enable "$id"
   fi
 fi
