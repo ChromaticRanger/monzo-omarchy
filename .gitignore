@@ -1,2 +1,4 @@
 node_modules/
 *.log
+docs/screenshot-full.png
+docs/_preview-tmp.png
