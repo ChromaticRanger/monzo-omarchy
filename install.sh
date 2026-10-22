@@ -18,9 +18,21 @@ cp -f "$repo"/{manifest.json,Panel.qml,Model.js,LICENSE} "$dest/"
 cp -f "$repo/bin/monzo-omarchy" "$dest/bin/"
 cp -f "$repo/cli/monzo-omarchy.ts" "$dest/cli/"
 chmod +x "$dest/bin/monzo-omarchy"
-ln -sfn "$dest/bin/monzo-omarchy" "$HOME/.local/bin/monzo-omarchy"
 echo "Plugin installed to $dest"
-echo "CLI linked at ~/.local/bin/monzo-omarchy"
+
+# Link the CLI onto PATH, but never clobber something we didn't create:
+# replace only a missing path or a symlink that already points at a
+# monzo-omarchy wrapper (i.e. a previous install of this plugin).
+link="$HOME/.local/bin/monzo-omarchy"
+target="$dest/bin/monzo-omarchy"
+if [[ ! -e $link && ! -L $link ]]; then
+  ln -s "$target" "$link" && echo "CLI linked at $link"
+elif [[ -L $link && $(readlink "$link") == */bin/monzo-omarchy ]]; then
+  ln -sfn "$target" "$link" && echo "CLI link updated at $link"
+else
+  echo "Skipped linking the CLI: $link already exists and isn't ours." >&2
+  echo "Run it as $target, or move the existing file and re-run ./install.sh." >&2
+fi
 
 # Make the shell notice the plugin, then enable it once (no-op if already on).
 if command -v omarchy-shell >/dev/null; then

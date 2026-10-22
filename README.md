@@ -15,7 +15,7 @@ Click the bank icon in the bar and a panel opens with:
 The data refreshes each time you open the panel. Nothing polls in the background.
 
 <p align="center">
-  <img src="docs/screenshot.png" alt="The Monzo panel open below the bank icon in the Omarchy bar" width="420">
+  <img src="docs/screenshot.png" alt="The Monzo panel: balances, pots and the last 7 days of transactions" width="420">
 </p>
 
 > **Personal use only.** Monzo's Developer API is not for public apps: a
@@ -90,7 +90,8 @@ cd ~/Projects/monzo-omarchy
 
 `install.sh` copies the plugin to
 `~/.config/omarchy/plugins/chromaticranger.monzo/`, links the CLI to
-`~/.local/bin/monzo-omarchy`, and enables the widget.
+`~/.local/bin/monzo-omarchy` (skipped, with a warning, if something else
+is already there), and enables the widget.
 
 Either way, a bank icon (<img src="docs/bar-icon.png" alt="bank icon" height="16">)
 should appear on the right of the bar. If it doesn't, see
