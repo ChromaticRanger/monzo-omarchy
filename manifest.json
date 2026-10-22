@@ -2,11 +2,16 @@
   "schemaVersion": 1,
   "id": "chromaticranger.monzo",
   "name": "Monzo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "ChromaticRanger",
+  "license": "MIT",
   "description": "Monzo balances, pots and the last 7 days of transactions.",
-  "kinds": ["bar-widget"],
-  "entryPoints": { "barWidget": "Panel.qml" },
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
   "barWidget": {
     "displayName": "Monzo",
     "description": "Monzo balances, pots and recent transactions",

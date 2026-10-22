@@ -21,7 +21,7 @@ The data refreshes each time you open the panel. Nothing polls in the background
 > **Personal use only.** Monzo's Developer API is not for public apps: a
 > client may only connect to its owner's account or a small set of users
 > they explicitly allow. Everyone who uses this widget should create
-> **their own** Monzo client (step 2). Never share your client secret.
+> **their own** Monzo client (step 1). Never share your client secret.
 
 ---
 
@@ -38,16 +38,7 @@ The data refreshes each time you open the panel. Nothing polls in the background
 
 ## Setup
 
-### 1. Get the code
-
-```bash
-git clone https://github.com/ChromaticRanger/monzo-omarchy.git ~/Projects/monzo-omarchy
-cd ~/Projects/monzo-omarchy
-```
-
-Any location works; `install.sh` finds the repo wherever it is.
-
-### 2. Create your Monzo OAuth client
+### 1. Create your Monzo OAuth client
 
 1. Go to <https://developers.monzo.com> and sign in with the email
    address on your Monzo account. Monzo emails you a login link; open it,
@@ -66,24 +57,49 @@ Any location works; `install.sh` finds the repo wherever it is.
    **Confidential matters.** Only confidential clients get a refresh
    token. Without one you would have to log in again every few hours.
 4. Save, and keep the page open: you'll need the **Client ID** and
-   **Client secret** in step 4.
+   **Client secret** in step 3.
 
-### 3. Install the widget and CLI
+### 2. Install the widget
+
+Pick **one** of these.
+
+**Option A: with Omarchy's plugin installer (recommended)**
 
 ```bash
+omarchy plugin add https://github.com/ChromaticRanger/monzo-omarchy.git --enable
+```
+
+Omarchy shows you what it is about to install and asks you to confirm.
+It clones this repo into `~/.config/omarchy/plugins/chromaticranger.monzo/`
+and enables the widget. The CLI comes with it, inside that folder.
+
+Optionally, put the CLI on your `PATH` so you can type `monzo-omarchy`
+anywhere (the rest of this README assumes you did):
+
+```bash
+ln -s ~/.config/omarchy/plugins/chromaticranger.monzo/bin/monzo-omarchy ~/.local/bin/monzo-omarchy
+```
+
+**Option B: from a clone**
+
+```bash
+git clone https://github.com/ChromaticRanger/monzo-omarchy.git ~/Projects/monzo-omarchy
+cd ~/Projects/monzo-omarchy
 ./install.sh
 ```
 
-This:
+`install.sh` copies the plugin to
+`~/.config/omarchy/plugins/chromaticranger.monzo/`, links the CLI to
+`~/.local/bin/monzo-omarchy`, and enables the widget.
 
-- copies `plugin/` to `~/.config/omarchy/plugins/chromaticranger.monzo/`
-- symlinks the CLI to `~/.local/bin/monzo-omarchy`
-- asks the Omarchy shell to rescan its plugins and enables the widget
-
-A bank icon (<img src="docs/bar-icon.png" alt="bank icon" height="16">) should appear on the right of the bar. If it doesn't, see
+Either way, a bank icon (<img src="docs/bar-icon.png" alt="bank icon" height="16">)
+should appear on the right of the bar. If it doesn't, see
 [Troubleshooting](#troubleshooting).
 
-### 4. Log in to Monzo
+### 3. Log in to Monzo
+
+Click the bank icon and press `Enter` (or click **Log in**). A terminal
+opens running the login. Or run it yourself:
 
 ```bash
 monzo-omarchy login
@@ -92,14 +108,14 @@ monzo-omarchy login
 1. Paste your **Client ID**.
 2. Paste your **Client secret**. What you type is hidden.
 3. Press Enter to accept the default redirect URL, or type the one you
-   registered in step 2. It must match **exactly**.
+   registered in step 1. It must match **exactly**.
 4. Your browser opens on Monzo's login page. Enter your email and open the
    link Monzo sends.
 5. The browser shows *"Done. Now approve access in the Monzo app"*. Approve
    the push notification in the Monzo app. The CLI waits up to 5 minutes.
 6. The CLI prints your balances, pots and latest transactions. You're done.
 
-### 5. Use it
+### 4. Use it
 
 Click the bank icon. The panel opens and refreshes.
 
@@ -150,6 +166,9 @@ monzo-omarchy logout                  revoke the token and forget it
 
 Exit codes: `0` ok, `2` needs login, `1` any other error.
 
+If you didn't put the CLI on your `PATH`, it is at
+`~/.config/omarchy/plugins/chromaticranger.monzo/bin/monzo-omarchy`.
+
 ---
 
 ## Where things are stored
@@ -168,6 +187,15 @@ the shell. `XDG_CONFIG_HOME` and `XDG_STATE_HOME` are honoured if set.
 
 ## Updating
 
+If you installed with `omarchy plugin add` (option A):
+
+```bash
+omarchy plugin update chromaticranger.monzo
+omarchy-restart-shell
+```
+
+If you installed from a clone (option B):
+
 ```bash
 cd ~/Projects/monzo-omarchy
 git pull
@@ -178,7 +206,6 @@ omarchy-restart-shell
 `omarchy-restart-shell` is needed after any change to the plugin. The
 shell notices changed files, but its hot reload reuses the previously
 compiled QML, so the old panel stays on screen until the shell restarts.
-CLI changes take effect immediately.
 
 ---
 
@@ -224,8 +251,7 @@ outside of the config folder".
 
 ```bash
 monzo-omarchy logout                      # revokes the token with Monzo
-omarchy plugin disable chromaticranger.monzo
-rm -rf ~/.config/omarchy/plugins/chromaticranger.monzo
+omarchy plugin remove chromaticranger.monzo  # or: disable it and delete ~/.config/omarchy/plugins/chromaticranger.monzo
 rm -f  ~/.local/bin/monzo-omarchy
 rm -rf ~/.config/monzo-omarchy ~/.local/state/monzo-omarchy
 ```
@@ -246,7 +272,7 @@ You can also delete the client at developers.monzo.com.
   on your local machine), token refresh (Monzo refresh tokens can only be
   used once, so each new pair is saved immediately), and API calls. It
   writes everything the panel needs to `snapshot.json`.
-- `plugin/Panel.qml` and `plugin/Model.js` render that file using the
+- `Panel.qml` and `Model.js` render that file using the
   Omarchy shell's own components, so the panel follows your theme and
   keyboard conventions.
 - If a refresh fails, the last good data stays on screen with a note
@@ -260,3 +286,9 @@ You can also delete the client at developers.monzo.com.
   Joint, business and rewards accounts are ignored.
 - For 5 minutes after a login the API allows full transaction history,
   then only the last 90 days. This widget only ever asks for 7 days.
+
+---
+
+## Licence
+
+[MIT](LICENSE)

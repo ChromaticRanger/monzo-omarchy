@@ -17,7 +17,10 @@ Panel {
   manageIpc: false
 
   readonly property string home: Quickshell.env("HOME")
-  readonly property string cli: home + "/.local/bin/monzo-omarchy"
+  // The CLI ships inside the plugin folder, so `omarchy plugin add` is a
+  // complete install. Run via bash so a lost executable bit can't break it.
+  // Omarchy always installs third-party plugins at ~/.config/omarchy/plugins/<id>/.
+  readonly property string cli: home + "/.config/omarchy/plugins/" + moduleName + "/bin/monzo-omarchy"
   readonly property string stateDir: (Quickshell.env("XDG_STATE_HOME") || (home + "/.local/state")) + "/monzo-omarchy"
 
   readonly property color foreground: bar ? bar.foreground : Commons.Color.foreground
@@ -41,7 +44,9 @@ Panel {
   }
 
   function login() {
-    if (root.bar) root.bar.run("omarchy-launch-floating-terminal-with-presentation " + root.bar.shellQuote(root.cli) + " login")
+    // The launcher takes one shell command string, so quote twice.
+    if (root.bar) root.bar.run("omarchy-launch-floating-terminal-with-presentation "
+      + root.bar.shellQuote("bash " + root.bar.shellQuote(root.cli) + " login"))
     root.close()
   }
 
@@ -66,7 +71,7 @@ Panel {
   }
 
   property Process refreshProc: Process {
-    command: [root.cli, "refresh"]
+    command: ["bash", root.cli, "refresh"]
     // The FileView watch normally catches the rewrite; reload anyway so a
     // first-ever snapshot (file did not exist when watched) is picked up.
     onExited: function(exitCode) { root.snapshotFile.reload() }
